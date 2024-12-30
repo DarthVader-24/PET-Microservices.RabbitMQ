@@ -6,7 +6,7 @@ namespace Domain.Core.Bus;
 
 public interface IEventBus
 {
-    Task SendCommand<T>(T command) where T : Command;
+    Task? SendCommand<T>(T command) where T : Command;
     
     Task PublishAsync<T>(T @event) where T : Event;
 

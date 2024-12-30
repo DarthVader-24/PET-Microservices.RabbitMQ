@@ -3,20 +3,21 @@ using Domain.Core.Bus;
 using Domain.Core.Commands;
 using Domain.Core.Events;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Infrastructure.Bus;
 
-public sealed class RabbitMQBus(IMediator mediator) : IEventBus
+public sealed class RabbitMQBus(IMediator? mediator, IServiceScopeFactory scopeFactory) : IEventBus
 {
     private readonly Dictionary<string, List<Type>> _handlers = [];
     private readonly List<Type> _eventTypes = [];
 
-    public Task SendCommand<T>(T command) where T : Command
+    public Task? SendCommand<T>(T command) where T : Command
     {
-        return mediator.Send(command);
+        return mediator?.Send(command);
     }
 
     public async Task PublishAsync<T>(T @event) where T : Event
@@ -97,9 +98,11 @@ public sealed class RabbitMQBus(IMediator mediator) : IEventBus
     {
         if (_handlers.TryGetValue(eventName, out var subscriptions))
         {
+            using var scope = scopeFactory.CreateScope();
+            
             foreach (var subscription in subscriptions)
             {
-                var handler = Activator.CreateInstance(subscription);
+                var handler = scope.ServiceProvider.GetService(subscription);
                 
                 if (handler is null) continue;
                 

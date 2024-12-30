@@ -1,6 +1,5 @@
 using Banking.Application.Interfaces;
 using Banking.Application.Services;
-using Banking.Data.Context;
 using Banking.Data.Repositories;
 using Banking.Domain.CommandHandlers;
 using Banking.Domain.Commands;
@@ -24,8 +23,12 @@ public static class DependencyContainer
     public static void RegisterServices(IServiceCollection services, MicroservicesEnum microservicesEnum)
     {
         // Domain Bus
-        services.AddTransient<IEventBus, RabbitMQBus>();
-
+        services.AddTransient<IEventBus, RabbitMQBus>(sp =>
+        {
+            var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+            return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+        });
+        
         switch (microservicesEnum)
         {
             case MicroservicesEnum.Banking:
@@ -41,6 +44,9 @@ public static class DependencyContainer
             case MicroservicesEnum.Transfer:
                 // Domain Events
                 services.AddTransient<IEventHandler<TransferCreatedEvent>, TransferEventHandler>();
+                
+                // Subscriptions
+                services.AddTransient<TransferEventHandler>();
                 
                 // Application Services
                 services.AddScoped<ITransferService, TransferService>();

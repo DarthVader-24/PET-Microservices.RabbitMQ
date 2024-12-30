@@ -12,4 +12,10 @@ public class TransferRepository(TransferDbContext context): ITransferRepository
     {
         return _context.TransferLogs;
     }
+
+    public void AddTransferLog(TransferLog transferLog)
+    {
+        _context.TransferLogs.Add(transferLog);
+        _context.SaveChanges();
+    }
 }
