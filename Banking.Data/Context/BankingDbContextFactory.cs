@@ -8,7 +8,6 @@ public class BankingDbContextFactory : IDesignTimeDbContextFactory<BankingDbCont
 {
     public BankingDbContext CreateDbContext(string[] args)
     {
-        // Point to the API project's appsettings.json
         var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../Banking.API");
 
         var configuration = new ConfigurationBuilder()

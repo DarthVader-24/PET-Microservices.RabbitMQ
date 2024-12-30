@@ -2,6 +2,7 @@ using Banking.Data.Context;
 using Infrastructure.IoC;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddDbContext<BankingDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("BankingDbConnection"))
 );
 
-DependencyContainer.RegisterServices(builder.Services);
+DependencyContainer.RegisterServices(builder.Services, MicroservicesEnum.Banking);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

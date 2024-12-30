@@ -6,12 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Dtos\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Transfer.Domain\Transfer.Domain.csproj" />
-    </ItemGroup>
-
 </Project>

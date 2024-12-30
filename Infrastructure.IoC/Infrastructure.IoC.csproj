@@ -15,6 +15,9 @@
       <ProjectReference Include="..\Banking.Data\Banking.Data.csproj" />
       <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
       <ProjectReference Include="..\Infrastructure.Bus\Infrastructure.Bus.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
+      <ProjectReference Include="..\Transfer.Application\Transfer.Application.csproj" />
+      <ProjectReference Include="..\Transfer.Data\Transfer.Data.csproj" />
     </ItemGroup>
 
 </Project>
