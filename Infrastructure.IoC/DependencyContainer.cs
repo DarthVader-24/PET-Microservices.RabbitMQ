@@ -1,5 +1,7 @@
 using Banking.Application.Interfaces;
+using Banking.Application.Services;
 using Banking.Data.Context;
+using Banking.Data.Repositories;
 using Banking.Domain.Interfaces;
 using Domain.Core.Bus;
 using Infrastructure.Bus;
@@ -7,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.IoC;
 
-public class DependencyContainer
+public static class DependencyContainer
 {
     public static void RegisterServices(IServiceCollection services)
     {
@@ -15,10 +17,9 @@ public class DependencyContainer
         services.AddTransient<IEventBus, RabbitMQBus>();
         
         // Application Services
-        services.AddScoped<IAccountService, IAccountService>();
+        services.AddScoped<IAccountService, AccountService>();
         
         // Data
-        services.AddScoped<IAccountRepository, IAccountRepository>();
-        services.AddScoped<BankingDbContext>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
     }
 }
