@@ -1,3 +1,4 @@
+using Banking.Application.Dtos;
 using Banking.Application.Interfaces;
 using Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,5 +15,13 @@ public class BankingController(IAccountService accountService) : ControllerBase
     public ActionResult<IEnumerable<Account>> GetBankAccounts()
     {
         return Ok(_accountService.GetAccounts());
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] AccountTransferDto accountTransferDto)
+    {
+        _accountService.Transfer(accountTransferDto);
+        
+        return Ok(accountTransferDto);
     }
 }
